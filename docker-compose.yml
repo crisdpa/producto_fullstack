@@ -16,7 +16,7 @@ services:
       sh -c "npm install && npm start"
     depends_on:
       - backend
-    Use only in MacOS to fix hot reloading
+    # Use only in MacOS to fix hot reloading
     environment:
       - CHOKIDAR_USEPOLLING=true
   # Backend
@@ -28,7 +28,6 @@ services:
     restart: always
     ports:
       - "8080:80"
-      - "443:443"
     volumes:
       - ./webserver:/etc/apache2/sites-available
       - ./backend:/var/www/app

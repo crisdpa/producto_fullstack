@@ -9,5 +9,5 @@ from django.conf.urls.static import serve
 
 urlpatterns = [
     url(r'^$', views.home, name="home"),
-    # url(r'^api/', include('opianalytics.api.urls')),
+    url(r'^api/', include('opianalytics.api.urls')),
 ]
