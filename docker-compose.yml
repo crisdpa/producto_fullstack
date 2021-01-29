@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  # Frontend
+  frontend:
+    container_name: frontend
+    build:
+      context: ./
+      dockerfile: FrontendDockerfile.dev
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/src
+    command: >
+      sh -c "npm install && npm start"
+    depends_on:
+      - backend
+    Use only in MacOS to fix hot reloading
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+  # Backend
+  backend:
+    container_name: backend
+    build:
+        context: ./
+        dockerfile: BackendDockerfile.dev
+    restart: always
+    ports:
+      - "8080:80"
+      - "443:443"
+    volumes:
+      - ./webserver:/etc/apache2/sites-available
+      - ./backend:/var/www/app
+    environment:
+      PYTHONPATH: /var/www/app:/usr/local/lib/python3.7/site-packages
+    command: >
+      sh -c "apachectl -DFOREGROUND"
+    depends_on:
+      - db
+  # Database
+  db:
+    container_name: db
+    image: mysql:5.7
+    command: mysqld --skip-grant-tables --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0 --init-file /init.sql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+    ports:
+      - "4306:3306"
+    volumes:
+      - ./database/init.sql:/init.sql

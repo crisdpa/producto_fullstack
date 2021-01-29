@@ -31,12 +31,13 @@
 /backend/opianalytics/settings/secret.py
 
 # Byte-compiled / optimized / DLL files
-/backend/__pycache__/
-/backend/*.py[cod]
-/backend/*$py.class
+__pycache__/
+*.pyc
+*.py[cod]
+*$py.class
 
 # C extensions
-/backend/*.so
+*.so
 
 # Distribution / packaging
 .Python

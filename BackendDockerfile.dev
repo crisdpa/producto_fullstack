@@ -1,0 +1,16 @@
+FROM python:3.7-buster
+
+ENV APP_ROOT /src
+RUN apt-get update --fix-missing
+
+RUN apt-get install -y apt-utils nano curl libmariadbclient-dev gdal-bin
+RUN apt-get install -y apache2 apache2-utils openssl libapache2-mod-wsgi-py3 gettext
+RUN a2enmod ssl
+RUN a2enmod rewrite
+
+RUN mkdir ${APP_ROOT}
+WORKDIR ${APP_ROOT}
+
+RUN pip install --upgrade pip
+ADD ./backend/requirements.txt ${APP_ROOT}/ 
+RUN pip install -r requirements.txt

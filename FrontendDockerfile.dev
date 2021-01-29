@@ -1,0 +1,9 @@
+# Development stage
+
+FROM node:14.5-buster
+
+ENV APP_ROOT /src
+RUN mkdir ${APP_ROOT}
+
+WORKDIR ${APP_ROOT}
+ENV HOST 0.0.0.0
