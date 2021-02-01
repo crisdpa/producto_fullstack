@@ -2,38 +2,16 @@
 Django secret settings example.
 """
 settings_secret = {
-    'SECRET_KEY': '',
-
-    # AWS
-    'AWS': {
-        'S3': {
-            'ACCESS_KEY_ID': '',
-            'SECRET_ACCESS_KEY': ''
-        }
-    },
-
-    # Mailgun
-    'MAILGUN': {
-        'API': ''
-    },
+    'SECRET_KEY': 'l@#4p%$jn2)_qycb($*fsc4kekh+q&twr)wvb^9zd*-#y&c!3=',
 
     # Databases
     'DATABASES': {
         'default': {
-            'name': '',
-            'host': '',
-            'user': '',
-            'password': '',
+            'name': 'db',
+            'host': 'db',
+            'user': 'root',
+            'password': 'root',
             'port': 3306
         }
-    },
-
-    # Email configuration
-    'EMAIL': {
-        'host': '',
-        'user': '',
-        'password': '',
-        'port': 587,
-        'tls': True
     }
 }

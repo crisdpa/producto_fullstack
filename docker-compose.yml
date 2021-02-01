@@ -31,10 +31,17 @@ services:
     volumes:
       - ./webserver:/etc/apache2/sites-available
       - ./backend:/var/www/app
+      - ./wait-for-mysql.sh:/wait-for-mysql.sh
+      - ./wait_for_mysql.py:/wait_for_mysql.py
     environment:
       PYTHONPATH: /var/www/app:/usr/local/lib/python3.7/site-packages
     command: >
-      sh -c "apachectl -DFOREGROUND"
+      sh -c "
+            python /wait_for_mysql.py &&
+            cd /var/www/app &&
+            python manage.py migrate &&
+            python manage.py add_locations locations-sample.csv &&
+            apachectl -DFOREGROUND"
     depends_on:
       - db
   # Database
@@ -50,4 +57,4 @@ services:
     ports:
       - "4306:3306"
     volumes:
-      - ./database/init.sql:/init.sql
+      - ./init.sql:/init.sql

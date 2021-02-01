@@ -1,38 +1,28 @@
-## Requesitos
 
-* Node.js
+# Opi Analytics Map
+## Run project
 
+Please, before running the project:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ 1. Rename the file *backend/secret_example.py* to *secret.py*.
+ 2. Get an **API KEY** from https://developer.mapquest.com/ and set it in the file *frontend/src/Utils/Popup.js* in line 3.
+ 3. Consider adding, removing or updating data from the file *backend/locations-sample.csv* in order to get different results (the file contains 500 registers).
 
-## Instrucciones
+```bash
+$ docker-compose up
+```
+## Infrastructure
+### Enviroment
+ - Docker
+ - Docker Compose
+### Backend
+ - Django 3.1.1
+ - Python 3.7
+ - MySQL 5.7 (GIS)
+ 
+### Frontend
+ - React 17.0.1
+ - Leaflet 1.7.1
 
-Para nstalar las dependencias:
-
-### `npm install`
-
-Para correr la aplicación
-
-### `npm start`
-
-Puedes abrir la aplicacion entrando a [localhost:3000](http://localhost:3000) en tu explorador.
-
-Comprueba que levantaste bien la aplicación.
-
-Para esto puedes ver la aplicación de Fulstack Base en [geo.opianalytics.com](https://geo.opianalytics.com/) que debería ser igual a la que levantaste.
-
-Inicia sesión con el usuario y la contaseña que enviamos a tu correo.
-
-## Documentación
-
-[React](https://reactjs.org/)
-
-[Leafle.js](https://leafletjs.com/)
-
-[PostgreSQL](https://www.postgresql.org/docs/)
-
-[PostGIS](https://postgis.net/documentation/)
-
-[Docker & Docker Compose](https://docs.docker.com/reference/)
-
-[OpenStreetMap](https://wiki.openstreetmap.org/wiki/Main_Page)
+### Services
+ - MapQuest
