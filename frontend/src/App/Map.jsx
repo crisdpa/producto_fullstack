@@ -1,9 +1,9 @@
 import React, { useRef, useEffect } from 'react';
 import * as L from 'leaflet';
-import carto from '@carto/carto.js';
 import 'leaflet/dist/leaflet.css';
 import PropTypes from 'prop-types';
 import { getPoints } from '../Utils/ApiUils';
+import { setContent } from '../Utils/Popup';
 import './Map.css';
 
 function Map (props) {
@@ -18,6 +18,7 @@ function Map (props) {
   let username = '';
   let apiKey = '';
   let tableName = '';
+  
   if (process && process.env) {
     if(process.envREACT_APP_USERNAME) {
       username = process.env.REACT_APP_USERNAME;
@@ -29,19 +30,15 @@ function Map (props) {
       tableName = process.env.REACT_APP_TABLE_NAME;
     }
   }
-  
+
   const map = useRef({});
 
   requestPoint.current = async () => {
     const pointsLayer = await createPointsLayer(username, apiKey, tableName);
     const popup = L.popup({ closeButton: true });
     pointsLayer.addTo(map.current);
-    
     pointsLayer.eachLayer(point=> {
       point.on('click', e => {
-        let htmlContent;
-        htmlContent = makeMarkupOnePoint(e.latlng.lat, e.latlng.lng, e.direction);
-        popup.setContent(htmlContent);
         popup.setLatLng(e.latlng);
         if (!popup.isOpen()) {
           popup.openOn(map.current);
@@ -49,7 +46,6 @@ function Map (props) {
       });
     });
   };
-  
     
   useEffect(() => {
     map.current = L.map('map', {
@@ -63,6 +59,8 @@ function Map (props) {
     });
     basemap.addTo(map.current)
 
+    // Attach an event when popup is open
+    map.current.on('popupopen', setContent);
   }, [
     lat,
     lng,
@@ -76,7 +74,7 @@ function Map (props) {
     
 const createPointsLayer = async (user, key, tableName) => {
   let pointData;
-  await getPoints(user, key, tableName).then(data=>pointData = data);
+  await getPoints().then(data=>pointData = data);
 
   const pointsArray = [];
   pointData.forEach(p=>{
@@ -88,20 +86,6 @@ const createPointsLayer = async (user, key, tableName) => {
 
   return L.layerGroup(pointsArray);
 };
-    
-function makeMarkupOnePoint(lat, lng, info = '') {
-  return `
-    <div class="widget">
-    ${lat ? `
-    <h3>${lat}, ${lng}</h3>
-    `: ''}
-    ${info ? `
-    <h4>${info}</h4>
-    `: '<h4>No hay dirección</h4>'}
-    </div>
-  `;
-}
-    
     
 Map.propTypes = {
   basemapURL: PropTypes.string,
@@ -121,4 +105,3 @@ Map.defaultProps = {
 }
     
 export default Map;
-    

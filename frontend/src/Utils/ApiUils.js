@@ -13,14 +13,17 @@ return axios
     });
 }
 
-export const getPoints = (user = '', apiKey = '', table = '') => {
-    const query = `https://${user}.carto.com/api/v2/sql?api_key=${apiKey}&q=SELECT latitude, longitude FROM ${table}`;
+export const getPoints = () => {
+    const query = 'http://0.0.0.0:8080/api/v1/location';
     return fetch(query)
-      .then(res=> {
+      .then( res => {
         const data = [];
-        res.data.rows.forEach(point=>{
-          data.push({lat: point.latitude, lng: point.longitude})
-      });
-      return data;
+        res.data.rows.forEach(location => {
+            data.push({
+                lat: location.coordinates[0],
+                lng: location.coordinates[1]
+            })
+        });
+        return data;
       });
   };
